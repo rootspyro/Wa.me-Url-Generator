@@ -10,6 +10,7 @@ function App() {
   const [phoneErr, setPhoneErr] = useState(false)
   const [msgErr, setMsgErr] = useState(false)
   const [isOpen, setIsOpen] = useState(false)
+  const [url, setUrl] = useState('')
 
   const HandleMessage = () => {
     setCharCount(() => {
@@ -52,6 +53,27 @@ function App() {
 
     if (ValidateForm()) {
       setIsOpen(true)
+
+      let body = { 
+        phone: phoneRef.current.value, 
+        msg: messageRef.current.value 
+      }
+      
+      fetch(process.env.REACT_APP_API + "/v1/ws/url", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify(body)
+      }).then( data => data.json() )
+        .then( response => {
+
+          if (response.status == "error") console.log(response.data)
+          if (response.status == "success") {
+            setUrl(response.data.url)
+          }
+
+        })
     }
 
   }
@@ -91,7 +113,7 @@ function App() {
           </p>
         </div>
       </div>
-      <Modal isOpen={isOpen} setIsOpen={setIsOpen}/>
+      <Modal isOpen={isOpen} setIsOpen={setIsOpen} url={url}/>
     </div>
   );
 }
