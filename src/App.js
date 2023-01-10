@@ -1,4 +1,5 @@
 import {useRef, useState} from 'react';
+import Modal from './components/Modal';
 import './App.css';
 
 function App() {
@@ -8,6 +9,7 @@ function App() {
   const [charCount, setCharCount] = useState(0)
   const [phoneErr, setPhoneErr] = useState(false)
   const [msgErr, setMsgErr] = useState(false)
+  const [isOpen, setIsOpen] = useState(false)
 
   const HandleMessage = () => {
     setCharCount(() => {
@@ -16,31 +18,40 @@ function App() {
   }
 
   const ValPhoneFormat = number => {
+
     const re = new RegExp('^\\+(?:[0-9]\x20?){6,14}[0-9]$')
-    const test = re.exec(number)
-    console.log(test)
     const value = re.test(number)
 
     return value
   }
 
+  const ValidateForm = () => {
+
+    // phone number validation
+    if (!ValPhoneFormat(phoneRef.current.value)) {
+      setPhoneErr(true)
+      return false
+    } else if ( phoneErr ) {
+      setPhoneErr(false)
+    }
+
+    // message length validation
+    if (charCount > 150) {
+      setMsgErr(true)
+      return false
+    } else if ( msgErr ) {
+      setMsgErr(false)
+    }
+
+    return true
+  } 
 
   const HandleSubmit = e => {
     
     e.preventDefault()
 
-    // phone number validation
-    if (!ValPhoneFormat(phoneRef.current.value)) {
-      setPhoneErr(true)
-    } else if ( phoneErr ) {
-      setPhoneErr(false)
-    }
-
-    //message length validation
-    if (charCount > 150) {
-      setMsgErr(true)
-    } else if ( msgErr ) {
-      setMsgErr(false)
+    if (ValidateForm()) {
+      setIsOpen(true)
     }
 
   }
@@ -80,6 +91,7 @@ function App() {
           </p>
         </div>
       </div>
+      <Modal isOpen={isOpen} setIsOpen={setIsOpen}/>
     </div>
   );
 }
