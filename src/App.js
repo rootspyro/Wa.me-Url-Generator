@@ -113,7 +113,7 @@ function App() {
           </p>
         </div>
       </div>
-      <Modal isOpen={isOpen} setIsOpen={setIsOpen} url={url}/>
+      <Modal isOpen={isOpen} setIsOpen={setIsOpen} url={url} setUrl={setUrl}/>
     </div>
   );
 }
