@@ -101,7 +101,7 @@ function App() {
   }
 
   return (
-    <div className="App">
+    <div className="App mb-20">
       <Alert alert={alert} icon="" message={errMessage} />
       <div className='banner text-center'>
         <h1 className='flex mt-20 text-4xl text-green-500 text-center font-bold justify-center'>
