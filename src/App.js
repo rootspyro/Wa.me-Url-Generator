@@ -1,5 +1,6 @@
-import {useRef, useState} from 'react';
+import {useEffect, useRef, useState} from 'react';
 import Modal from './components/Modal';
+import Alert from './components/Alert';
 import './App.css';
 
 function App() {
@@ -11,6 +12,10 @@ function App() {
   const [msgErr, setMsgErr] = useState(false)
   const [isOpen, setIsOpen] = useState(false)
   const [url, setUrl] = useState('')
+
+  useEffect(() => {
+
+  }, [url])
 
   const HandleMessage = () => {
     setCharCount(() => {
@@ -70,6 +75,7 @@ function App() {
 
           if (response.status == "error") console.log(response.data)
           if (response.status == "success") {
+            console.log(response)
             setUrl(response.data.url)
           }
 
