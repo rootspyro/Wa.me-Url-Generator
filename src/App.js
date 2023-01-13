@@ -12,6 +12,8 @@ function App() {
   const [msgErr, setMsgErr] = useState(false)
   const [isOpen, setIsOpen] = useState(false)
   const [url, setUrl] = useState('')
+  const [alert, setAlert] = useState(false)
+  const [errMessage, setErr] = useState('')
 
   useEffect(() => {
 
@@ -73,10 +75,24 @@ function App() {
       }).then( data => data.json() )
         .then( response => {
 
-          if (response.status == "error") console.log(response.data)
+          if (response.status == "error") {
+            setErr(response.data)
+            setTimeout(()=>{
+              setAlert(false) 
+            }, 3000)
+            setAlert(true)
+            setIsOpen(false)
+          }
           if (response.status == "success") {
-            console.log(response)
             setUrl(response.data.url)
+
+          } else {
+            setErr("Error: something went wrong")
+            setTimeout(()=>{
+              setAlert(false) 
+            }, 3000)
+            setAlert(true)
+            setIsOpen(false)
           }
 
         })
@@ -86,6 +102,7 @@ function App() {
 
   return (
     <div className="App">
+      <Alert alert={alert} icon="" message={errMessage} />
       <div className='banner text-center'>
         <h1 className='flex mt-20 text-4xl text-green-500 text-center font-bold justify-center'>
           <span>Wa<span className='text-sky-600'>.me</span> Generator <i className='wsico-whatsapp'></i></span>
